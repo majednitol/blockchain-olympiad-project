@@ -1,5 +1,5 @@
-// SPDX-License-Identifier: MIT
-pragma solidity >=0.4.22 <0.9.0;
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.9;
 
 contract Helth {
     struct PatientParient {
@@ -23,7 +23,7 @@ contract Helth {
         PatientParient patientParient;
         uint256 nid;
         bool isAdded;
-        bool dataAccress;
+        address[] dataHash;
     }
 
     struct Credential {
@@ -602,4 +602,9 @@ contract Helth {
             "user alredy revoked from  data accress"
         );
     }
+
+    // function addDataByDoctor(address _patient, uint data) public {
+    //     Patient storage newPatient = allPatient[_patient].dataHash;
+    //     newPatient.dataHash.push(2);
+    // }
 }

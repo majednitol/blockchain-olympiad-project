@@ -1,5 +1,5 @@
 {
-  "name": "did-project",
+  "name": "font-end",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -11,18 +11,11 @@
     "deploy": "next build && next export && npx thirdweb@latest upload out"
   },
   "dependencies": {
-    "@nomicfoundation/hardhat-toolbox": "^2.0.2",
     "@thirdweb-dev/react": "^3",
     "@thirdweb-dev/sdk": "^3",
     "ethers": "^5",
-    "hardhat": "^2.14.0",
     "next": "^13",
     "react": "^18.2",
     "react-dom": "^18.2"
-  },
-  "devDependencies": {
-    "autoprefixer": "^10.4.14",
-    "postcss": "^8.4.23",
-    "tailwindcss": "^3.3.2"
   }
 }
