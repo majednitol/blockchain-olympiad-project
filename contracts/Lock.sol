@@ -2,7 +2,6 @@
 pragma solidity >=0.4.22 <0.9.0;
 
 contract Helth {
-    // All struct
     struct PatientParient {
         string name;
         address patientParient;
@@ -24,6 +23,7 @@ contract Helth {
         PatientParient patientParient;
         uint256 nid;
         bool isAdded;
+        bool dataAccress;
     }
 
     struct Credential {
@@ -33,6 +33,7 @@ contract Helth {
         string credentialValue;
         string dateIssued;
         bool isAdded;
+        bool dataAccress;
     }
     struct Doctor {
         address doctor;
@@ -42,12 +43,14 @@ contract Helth {
         uint256 nid;
         Patient[] patient;
         bool isAdded;
+        bool dataAccress;
     }
     struct PharmacyCompany {
         address pharmacyCompany;
         string name;
         uint256 pharmacyCompanyId;
         bool isAdded;
+        bool dataAccress;
     }
 
     struct Pharmaciest {
@@ -55,6 +58,7 @@ contract Helth {
         string name;
         uint256 pharmaciestId;
         bool isAdded;
+        bool dataAccress;
     }
 
     struct FoodIndusty {
@@ -62,6 +66,7 @@ contract Helth {
         string name;
         uint256 foodIndustyId;
         bool isAdded;
+        bool dataAccress;
     }
 
     struct Hospital {
@@ -69,6 +74,7 @@ contract Helth {
         string name;
         uint256 hospitalId;
         bool isAdded;
+        bool dataAccress;
     }
 
     struct Pharmacy {
@@ -76,6 +82,7 @@ contract Helth {
         string name;
         uint256 pharmacyId;
         bool isAdded;
+        bool dataAccress;
     }
 
     struct DataAnalyst {
@@ -83,8 +90,9 @@ contract Helth {
         string name;
         uint256 dataAnalystId;
         bool isAdded;
+        bool dataAccress;
     }
-    // all maping
+
     mapping(address => Patient) public allPatient;
     mapping(address => PatientParient) public allPatientParient;
     mapping(address => Doctor) public allDoctor;
@@ -95,7 +103,6 @@ contract Helth {
     mapping(address => Pharmacy) public allPharmacy;
     mapping(address => DataAnalyst) public allDataAnalyst;
     mapping(address => Credential) public allCredential;
-
     //all address
 
     address[] public allPatientAddress;
@@ -108,6 +115,9 @@ contract Helth {
     address[] public allPharmacyAddress;
     address[] public allDataAnalystAddress;
     address[] public allCredentialAddress;
+    address[] public allAddress;
+    mapping(address => mapping(address => bool)) public accressList;
+
     address public ContractOwner;
 
     constructor() {
@@ -124,6 +134,10 @@ contract Helth {
         string memory _bloodGroup,
         uint256 _nid
     ) public {
+        require(
+            allPatient[_patient].isAdded == false,
+            "you already added yourself"
+        );
         Patient storage newPatient = allPatient[_patient];
 
         newPatient.patient = _patient;
@@ -177,6 +191,10 @@ contract Helth {
         uint256 _doctorId,
         uint256 _nid
     ) public {
+        require(
+            allDoctor[_doctor].isAdded == false,
+            "you already added yourself"
+        );
         Doctor storage newDoctor = allDoctor[_doctor];
 
         newDoctor.doctor = _doctor;
@@ -196,7 +214,10 @@ contract Helth {
         returns (address, string memory, uint256, uint256, uint256, bool)
     {
         Doctor storage newDoctor = allDoctor[_doctor];
-
+        require(
+            accressList[_doctor][msg.sender] == true,
+            "user alredy have accress in your data"
+        );
         return (
             newDoctor.doctor,
             newDoctor.name,
@@ -212,6 +233,10 @@ contract Helth {
         string memory _name,
         uint256 _pharmacyCompanyId
     ) public {
+        require(
+            allPharmacyCompany[_pharmacyCompany].isAdded == false,
+            "you already added yourself"
+        );
         PharmacyCompany storage newPharmacyCompany = allPharmacyCompany[
             _pharmacyCompany
         ];
@@ -226,6 +251,10 @@ contract Helth {
     function viewPharmacyCompany(
         address _pharmacyCompany
     ) public view returns (address, string memory, uint256, bool) {
+        require(
+            accressList[_pharmacyCompany][msg.sender] == true,
+            "user alredy have accress in your data"
+        );
         PharmacyCompany storage newPharmacyCompany = allPharmacyCompany[
             _pharmacyCompany
         ];
@@ -243,6 +272,10 @@ contract Helth {
         string memory _name,
         uint256 _pharmaciestId
     ) public {
+        require(
+            allPharmaciest[_pharmaciest].isAdded == false,
+            "you already added yourself"
+        );
         Pharmaciest storage newPharmaciest = allPharmaciest[_pharmaciest];
 
         newPharmaciest.pharmaciest = _pharmaciest;
@@ -255,6 +288,10 @@ contract Helth {
     function viewPharmaciest(
         address _pharmaciest
     ) public view returns (address, string memory, uint256, bool) {
+        require(
+            accressList[_pharmaciest][msg.sender] == true,
+            "user alredy have accress in your data"
+        );
         Pharmaciest storage newPharmaciest = allPharmaciest[_pharmaciest];
 
         return (
@@ -270,6 +307,10 @@ contract Helth {
         string memory _name,
         uint256 _foodIndustyId
     ) public {
+        require(
+            allFoodIndusty[_foodIndusty].isAdded == false,
+            "you already added yourself"
+        );
         FoodIndusty storage newFoodIndusty = allFoodIndusty[_foodIndusty];
 
         newFoodIndusty.foodIndusty = _foodIndusty;
@@ -282,6 +323,10 @@ contract Helth {
     function viewFoodIndusty(
         address _foodIndusty
     ) public view returns (address, string memory, uint256, bool) {
+        require(
+            accressList[_foodIndusty][msg.sender] == true,
+            "user alredy have accress in your data"
+        );
         FoodIndusty storage newFoodIndusty = allFoodIndusty[_foodIndusty];
 
         return (
@@ -297,6 +342,10 @@ contract Helth {
         string memory _name,
         uint256 _hospitalId
     ) public {
+        require(
+            allHospital[_hospital].isAdded == false,
+            "you already create your profile"
+        );
         Hospital storage newHospital = allHospital[_hospital];
 
         newHospital.hospital = _hospital;
@@ -310,6 +359,10 @@ contract Helth {
     function viewHospital(
         address _hospital
     ) public view returns (address, string memory, uint256, bool) {
+        require(
+            accressList[_hospital][msg.sender] == true,
+            "user alredy have accress in your data"
+        );
         Hospital storage newHospital = allHospital[_hospital];
 
         return (
@@ -325,6 +378,10 @@ contract Helth {
         string memory _name,
         uint256 _dataAnalystId
     ) public {
+        require(
+            allDataAnalyst[_dataAnalyst].isAdded == false,
+            "you already added yourself"
+        );
         DataAnalyst storage newDataAnalyst = allDataAnalyst[_dataAnalyst];
 
         newDataAnalyst.dataAnalyst = _dataAnalyst;
@@ -338,6 +395,10 @@ contract Helth {
     function viewDataAnalyst(
         address _dataAnalyst
     ) public view returns (address, string memory, uint256, bool) {
+        require(
+            accressList[_dataAnalyst][msg.sender] == true,
+            "user alredy have accress in your data"
+        );
         DataAnalyst storage newDataAnalyst = allDataAnalyst[_dataAnalyst];
 
         return (
@@ -353,6 +414,10 @@ contract Helth {
         string memory _name,
         uint256 _pharmacyId
     ) public {
+        require(
+            allPharmacy[_pharmacy].isAdded == false,
+            "you already added yourself"
+        );
         Pharmacy storage newPharmacy = allPharmacy[_pharmacy];
 
         newPharmacy.pharmacy = _pharmacy;
@@ -366,6 +431,10 @@ contract Helth {
     function viewPharmacy(
         address _pharmacy
     ) public view returns (address, string memory, uint256, bool) {
+        require(
+            accressList[_pharmacy][msg.sender] == true,
+            "user alredy have accress in your data"
+        );
         Pharmacy storage newPharmacy = allPharmacy[_pharmacy];
 
         return (
@@ -383,6 +452,10 @@ contract Helth {
         string memory _credentialValue,
         string memory _dateIssued
     ) public {
+        require(
+            allCredential[_issuerAddress].isAdded == false,
+            "you already added your Credential"
+        );
         Credential storage newCredential = allCredential[_issuerAddress];
 
         newCredential.issuerAddress = _issuerAddress;
@@ -408,6 +481,10 @@ contract Helth {
             bool
         )
     {
+        require(
+            accressList[_issuerAddress][msg.sender] == true,
+            "user alredy have accress in your data"
+        );
         Credential storage newCredential = allCredential[_issuerAddress];
 
         return (
@@ -429,6 +506,10 @@ contract Helth {
         string memory _bloodGroup,
         uint256 _nid
     ) public {
+        require(
+            allPatientParient[_patientParient].isAdded == false,
+            "you already create your profile"
+        );
         PatientParient storage newPatientParient = allPatientParient[
             _patientParient
         ];
@@ -462,6 +543,10 @@ contract Helth {
             bool
         )
     {
+        require(
+            accressList[_patientParient][msg.sender] == true,
+            "user alredy have accress in your data"
+        );
         PatientParient memory newPatientParient = allPatientParient[
             _patientParient
         ];
@@ -475,6 +560,46 @@ contract Helth {
             newPatientParient.bloodGroup,
             newPatientParient.nid,
             newPatientParient.isAdded
+        );
+    }
+
+    // accress and revoke function
+
+    function accressDataAnyone(address user) public {
+        //   Patient storage newPatient = allPatient[_patient];
+        //    Doctor storage newDoctor = allDoctor[_doctor];
+        //    PatientParient memory newPatientParient = allPatientParient[_patientParient];
+        //    Pharmacy storage newPharmacy = allPharmacy[_pharmacy];
+        //     DataAnalyst storage newDataAnalyst = allDataAnalyst[_dataAnalyst];
+        //     Hospital storage newHospital = allHospital[_hospital];
+        //     FoodIndusty storage newFoodIndusty = allFoodIndusty[_foodIndusty];
+        //     Pharmaciest storage newPharmaciest = allPharmaciest[_pharmaciest];
+        //     PharmacyCompany storage newPharmacyCompany = allPharmacyCompany[
+        //       _pharmacyCompany
+        //   ];
+        require(msg.sender != user, "you can't accress yourself ");
+        require(
+            accressList[msg.sender][user] = true,
+            "user alredy have accress in your data"
+        );
+    }
+
+    function revokeDataAnyone(address user) public {
+        //   Patient storage newPatient = allPatient[_patient];
+        //    Doctor storage newDoctor = allDoctor[_doctor];
+        //    PatientParient memory newPatientParient = allPatientParient[_patientParient];
+        //    Pharmacy storage newPharmacy = allPharmacy[_pharmacy];
+        //     DataAnalyst storage newDataAnalyst = allDataAnalyst[_dataAnalyst];
+        //     Hospital storage newHospital = allHospital[_hospital];
+        //     FoodIndusty storage newFoodIndusty = allFoodIndusty[_foodIndusty];
+        //     Pharmaciest storage newPharmaciest = allPharmaciest[_pharmaciest];
+        //     PharmacyCompany storage newPharmacyCompany = allPharmacyCompany[
+        //       _pharmacyCompany
+        //   ];
+        require(msg.sender != user, "you can't revoke yourself ");
+        require(
+            accressList[msg.sender][user] = false,
+            "user alredy revoked from  data accress"
         );
     }
 }
